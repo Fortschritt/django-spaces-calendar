@@ -1,0 +1,44 @@
+{% extends "spaces_calendar/base.html" %}
+{% load calendar_tags collab_tags space_tags i18n %}
+
+{% block title %}{% trans 'Event' %}: {{ event }}{% endblock %}
+{% block content %}
+<div class="col-xl-6 col-xl-offset-3 col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<div class="panel panel-default">
+<div class="panel-body">
+	
+    <h1>{{ event.title }} <small class="text-muted">{{ event.event_type }}</small></h1>
+	<p>
+	<strong>{% trans 'Beginning' %}:</strong> {{ event.occurrence_set.first.start_time }}
+	<br>
+	<strong>{% trans 'End' %}:</strong> {{ event.occurrence_set.first.end_time }}
+	</p>
+    <h4>{% trans 'Description' %}</h4>
+    {% with event.notes.all as notes %}
+    {% if notes %}
+        {% for note in notes %}
+        <p>{{ note }}</p>
+        {% endfor %}
+    {% else %}
+    <p>{% trans 'None' %}</p>
+    {% endif %}
+    {% endwith %}
+
+{% if user|is_admin_or_manager:space or user|is_owner:event %}
+
+	<p>
+		<a class="btn btn-primary" data-toggle="collapse" href="#editForm" axia-expanded="false" aria-controls="editForm">
+		 {% trans 'Edit' %}
+		</a>
+	</p>
+	<div class="collapse" id="editForm">
+	{% include 'spaces_calendar/includes/full_event_form.html' %}
+
+	<div>
+
+{% endif %}
+
+</div>
+</div>
+</div>
+{% endblock %}

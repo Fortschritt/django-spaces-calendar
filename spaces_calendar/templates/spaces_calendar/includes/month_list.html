@@ -1,0 +1,54 @@
+{% load i18n calendar_tags %}
+
+{% for week in calendar %}
+{% for day, items in week %}
+{% if day > 0 %}
+  {% if this_quarter %}
+    {% is_equal_day today this_quarter.year month day as this_day_is_today %}
+  {% else %}
+    {% is_equal_day today this_month.year this_month.month day as this_day_is_today %}
+  {% endif %}
+
+<div class="list-group-item list-group-item-cal {% if this_day_is_today %}list-group-item-info{% endif %}">
+  <div class="media">
+
+	<div class="pull-left cal-date">
+		{{ day }}
+	<span class="text-muted">
+	{% if quarterly_day_names %}
+		{% lookup quarterly_day_names month day %}.
+	{% else %}
+		{% lookup day_names day %}.
+	{% endif %}
+	</span>
+	</div>
+	<div class="media-body">
+	{% for item in items.ends %}
+    <a href="{% url 'spaces_calendar:event' item.event.pk %}" 
+	   class="btn btn-cal {% if item.start_time.day != item.end_time.day %}btn-cal-ends{% endif %} btn-color-{{item.event.event_type.pk}}">
+    {{ item.title }}
+{#	<span class="">{{ item.end_time|time:"TIME_FORMAT" }}</span> #}
+    </a><br>
+    {% endfor %}
+	{% for item in items.throughout %}
+    <a href="{% url 'spaces_calendar:event' item.event.pk %}"
+       class="btn btn-cal btn-cal-full-day btn-color-{{item.event.event_type.pk}}">
+    {{ item.title }}
+    </a>
+    {% endfor %}
+	{% for item in items.starts %}
+	<a href="{% url 'spaces_calendar:event' item.event.pk %}" 
+	   class="btn btn-cal {% if item.start_time.day != item.end_time.day %}btn-cal-starts{% endif %} btn-color-{{item.event.event_type.pk}}">
+{#	<span class="">{{ item.start_time|time:"TIME_FORMAT" }}</span> #}
+	{{ item.title }}
+	</a><br>
+	{% empty %}
+	{% if not items.ends or items.starts or items.throughout %}&nbsp;{% endif %}
+	{% endfor %}
+
+	</div>
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endfor %}

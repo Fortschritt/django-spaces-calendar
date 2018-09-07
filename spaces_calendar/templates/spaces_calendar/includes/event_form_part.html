@@ -1,0 +1,35 @@
+{% load i18n widget_tweaks%}
+<div class="form-group{% if event_form.event_type.errors %} has-error{% endif %}">
+	<label for="{{ event_form.event_type.id_for_label }}" class="control-label">{% trans "Event type" %}{% if event_form.event_type.field.required %}<span class="asteriskField">*</span>{% endif %}:</label><br>
+	<div class="text-center">
+    {% for radio in  event_form.event_type %}
+	{% if forloop.counter > 1 %}
+	<div class="radio-inline custom-control custom-radio">
+	  <label>
+	    {{ radio.tag }}
+	    <span class="custom-control-indicator"></span>
+	    {{ radio.choice_label }}
+	  </label>
+	</div>
+	{% endif %}
+	{% endfor %}
+	</div>
+    {% for error in event_form.event_type.errors %}
+		<strong><div class="help-block">{{ error }}</strong></div>
+	{% endfor %}
+</div>
+<div class="form-group{% if event_form.title.errors %} has-error{% endif %}">
+	<label for="{{ event_form.title.id_for_label }}" class="control-label">{{ event_form.title.label }}{% if event_form.event_type.field.required %}<span class="asteriskField">*</span>{% endif %}:</label>
+	{% if event_form.title.field.required %}
+	   	{{ event_form.title|add_class:"form-control"|attr:"required:required" }}
+	{% else %}
+		{{ event_form.title|add_class:"form-control" }}
+	{% endif %}
+    {% for error in event_form.title.errors %}
+	   <strong><div class="help-block">{{ error }}</strong></div>
+    {% endfor %}
+</div>
+<div class="form-group">
+    <label for="{{ event_form.description.id_for_label }}" class="control-label">{% trans event_form.description.label %}:</label>
+    {{ event_form.description|add_class:"form-control" }}
+</div>

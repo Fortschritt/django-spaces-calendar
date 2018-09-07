@@ -1,0 +1,35 @@
+{% extends 'spaces_calendar/base.html' %}
+
+{% load i18n calendar_tags %}
+
+{% block content %}
+<div class="panel panel-default">
+<div class="panel-body">
+
+<div class="media-list media-list-users list-group">
+<div class="list-group-item">
+<div class="pull-right">
+<a href="{% url 'spaces_calendar:monthly_view' next_month.year next_month.month %}">
+{{ next_month|strftime:"%B" }}
+<span class="icon icon-chevron-right"></span>
+</a>
+</div>
+<div class="pull-left">
+<a href="{% url 'spaces_calendar:monthly_view' last_month.year last_month.month %}">
+<span class="icon icon-chevron-left"></span>
+{{ last_month|strftime:"%B" }}
+</a>
+</div>
+<div class="text-center">
+<strong>
+{{ this_month|strftime:"%B" }} {{ this_month.year }}
+</strong>
+</div>
+</div>
+  {% include 'spaces_calendar/includes/month_list.html' %}
+</div>
+
+</div>
+</div>
+
+{% endblock %}

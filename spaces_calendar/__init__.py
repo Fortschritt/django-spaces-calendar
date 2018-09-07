@@ -1,0 +1,1 @@
+default_app_config = 'spaces_calendar.apps.SpacesCalendarConfig'

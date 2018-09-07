@@ -1,0 +1,71 @@
+
+{% load i18n sekizai_tags staticfiles %}
+{% addtoblock 'js' %}
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/moment-locale-de.js' %}"></script>
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript">
+	$(function () {
+		var min_selector = '#id_start_time';
+		var max_selector = '#id_end_time';
+    	$(min_selector+', '+max_selector).datetimepicker({
+			locale: 'de',
+			format: 'YYYY-MM-DD HH:mm',
+			useCurrent: false,
+		});
+		$(min_selector).on('dp.change', function(ev){
+			$(max_selector).data("DateTimePicker").minDate(ev.date);
+			if (ev.oldDate === null) {
+				 $(min_selector).data('DateTimePicker')
+					.date(ev.date.hour(9))
+					.date(ev.date.minute(0));
+        	}
+		});
+		$(max_selector).on('dp.change', function(ev){
+			$(min_selector).data("DateTimePicker").maxDate(ev.date);
+			if (ev.oldDate === null) {
+				 $(max_selector).data('DateTimePicker')
+					.date(ev.date.hour(12))
+					.date(ev.date.minute(0));
+        	}
+		});
+    });
+</script>
+{{ recurrence_form.media.js }}
+{% endaddtoblock  %}
+
+{% addtoblock 'css' %}
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.min.css' %}" type="text/css" >
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker-standalone.css' %}" type="text/css" >
+{{ recurrence_form.media.css }}
+{% endaddtoblock  %}
+
+    <h3>{% trans 'Add Event' %}</h3>
+    {{ event_form.non_field_errors }}
+    {{ recurring_form.non_field_errors }}
+    {% if event_form.errors or recurrence_form.errors %}
+    <p class="form-errors">{% trans "Please fix any errors." %}</p>
+    {% endif %}
+    <form method="post" action="">
+	{% csrf_token %}
+		<div class="row">
+		{% for field in recurrence_form %}
+			<div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+		    {% include 'spaces_blog/includes/form_field.html' %}
+			</div>
+		{% endfor %}
+		</div>
+        {% include "spaces_calendar/includes/event_form_part.html" %}
+		{% include "spaces_notifications/form.html" %}
+		<button type="submit" class="btn btn-primary">
+			<span class="icon icon-check"></span>
+			{% trans "Submit" %}
+		</button>
+		{% if event %}
+		<a href="{% url 'spaces_calendar:delete_event' event.pk %}" class="btn btn-danger pull-right">
+			<span class="icon icon-trash"></span>
+			{% trans 'Delete' %}
+		</a>
+		{% endif %}
+    </form>
+

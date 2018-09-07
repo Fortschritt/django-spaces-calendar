@@ -1,0 +1,54 @@
+{% extends 'spaces_calendar/base.html' %}
+
+{% load i18n calendar_tags %}
+
+{% block content %}
+<div class="panel panel-default">
+<div class="panel-body">
+<h1>{{ plugin.title }} <small class="text-muted">{% trans 'for' %} {{ space }}</small></h1>
+<div class="m-b">
+	<a class="btn btn-primary btn-create" href="{% url 'spaces_calendar:add_event' %}">
+		<span class="icon icon-calendar"></span>
+		{% trans 'Add Event' %}
+	</a>
+</div>
+<div class="">
+<div class="media-list media-list-users list-group">
+  <div class="list-group-item">
+    <div class="pull-right">
+      <a href="{% url 'spaces_calendar:quarterly_view' next_quarter.year next_quarter.quarter %}">
+        Q{{ next_quarter.quarter }}
+        <span class="icon icon-chevron-right"></span>
+      </a>
+    </div>
+    <div class="pull-left">
+      <a href="{% url 'spaces_calendar:quarterly_view' last_quarter.year last_quarter.quarter %}">
+        <span class="icon icon-chevron-left"></span>
+        Q{{ last_quarter.quarter }}
+      </a>
+    </div>
+    <div class="text-center">
+      <strong>
+      Q{{ this_quarter.quarter }} {{ this_quarter.year }}
+      </strong>
+    </div>
+  </div>
+</div>
+</div>
+{% for calendar in calendars %}
+<div class="col-lg-4">
+<div class="media-list media-list-users list-group">
+  {% lookup months forloop.counter|add:-1 as month %}
+  <div class="list-group-item">
+  <div class="media text-center">
+  <strong>{% month_name month %}</strong>
+  </div>
+  </div>
+  {% include 'spaces_calendar/includes/month_list.html' %}
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+{% endblock %}
