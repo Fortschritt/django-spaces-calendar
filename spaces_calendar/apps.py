@@ -1,5 +1,8 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
 from collab.util import db_table_exists
+
+from spaces_calendar.signals import create_notice_types
 
 #TODO: Put into settings.py
 EVENT_TYPES = (
@@ -30,6 +33,7 @@ class SpacesCalendarConfig(AppConfig):
         from .models import CalendarEvent
         registry.register(CalendarEvent)
         # register a custom notification
+        """
         from spaces_notifications.utils import register_notification
         from django.utils.translation import ugettext_noop as _
         register_notification(
@@ -42,3 +46,5 @@ class SpacesCalendarConfig(AppConfig):
             _('An event has been modified.'),
             _('An event has been modified.')
         )
+        """
+        post_migrate.connect(create_notice_types, sender=self)
