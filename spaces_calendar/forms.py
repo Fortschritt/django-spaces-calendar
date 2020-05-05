@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
-from swingtime.forms import FIELDS_REQUIRED, SplitDateTimeWidget
+from swingtime.forms import SplitDateTimeWidget
 from swingtime.forms import EventForm as st_EventForm
 from swingtime.models import Occurrence, Event, EventType, Note
 
@@ -29,8 +29,7 @@ class SingleOccurrenceForm(forms.ModelForm):
 
     class Meta:
         model = Occurrence
-        if FIELDS_REQUIRED:
-            fields = "__all__"
+        fields = "__all__"
 
 
 class EventForm(st_EventForm):
@@ -53,8 +52,7 @@ class EventForm(st_EventForm):
 
     class Meta:
         model = Event
-        if FIELDS_REQUIRED:
-            fields = "__all__"
+        fields = "__all__"
         labels = {
             'title': _('title')
         }

@@ -1,9 +1,11 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
 from spaces.models import Space,SpacePluginRegistry, SpacePlugin, SpaceModel
-from swingtime.models import Event
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+
+from swingtime.models import Event
+
 
 class SpacesCalendar(SpacePlugin):
     """
@@ -20,9 +22,9 @@ class CalendarEvent(SpaceModel):
     """
     A calender event. Acts as a bridge between a space and django_swingtime.
     """
-    event = models.OneToOneField(Event)
-    calendar = models.ForeignKey(SpacesCalendar)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    event = models.OneToOneField(Event, on_delete=models.CASCADE)
+    calendar = models.ForeignKey(SpacesCalendar, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     spaceplugin_field_name = "calendar"
 
