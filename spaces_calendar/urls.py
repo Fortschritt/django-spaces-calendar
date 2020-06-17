@@ -4,7 +4,7 @@ from spaces.urls import space_patterns
 from . import views
 
 app_name = 'spaces_calendar'
-urlpatterns = space_patterns(
+urlpatterns = (
 
     url(r'^calendar/$', views.index, name='index'),
 

@@ -4,17 +4,19 @@ import calendar
 import itertools
 from math import ceil
 import pytz
+
 from django import http
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import DeleteView
+
 from actstream.signals import action as actstream_action
 from swingtime.models import EventType, Event, Occurrence
 from swingtime.views import add_event  as st_add_event
@@ -24,6 +26,7 @@ from swingtime.views import _datetime_view  as st_datetime_view
 from swingtime.views import month_view as st_month_view
 from swingtime.views import year_view as st_year_view
 from swingtime import forms as st_forms
+
 from collab.decorators import permission_required_or_403
 from collab.util import is_owner_or_admin
 from spaces.models import SpacePluginRegistry
