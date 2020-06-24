@@ -30,6 +30,9 @@
 		<a class="btn btn-primary" data-toggle="collapse" href="#editForm" axia-expanded="false" aria-controls="editForm">
 		 {% trans 'Edit' %}
 		</a>
+        <a class="btn btn-info pull-right" href="{% url 'spaces_calendar:index' %}">
+		 <span class="icon icon-level-up"></span> {% trans 'Back to overview' %}
+		</a>
 	</p>
 	<div class="collapse" id="editForm">
 	{% include 'spaces_calendar/includes/full_event_form.html' %}
